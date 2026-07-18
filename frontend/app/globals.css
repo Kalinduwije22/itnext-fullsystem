@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; }
+
+body {
+  background: #F2F6F9;
+  color: #0A2540;
+  font-family: var(--font-body), sans-serif;
+}
+
+/* boarding-pass style route/eyebrow label */
+.eyebrow {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #0FA697;
+}
+
+/* dotted flight path connector — animated so the dots visibly travel */
+.flightpath {
+  background-image: radial-gradient(circle, #2A7DE1 1.2px, transparent 1.3px);
+  background-size: 10px 2px;
+  background-repeat: repeat-x;
+  background-position: center;
+  height: 2px;
+  animation: flightpath-move 3s linear infinite;
+}
+
+@keyframes flightpath-move {
+  from { background-position: 0 center; }
+  to { background-position: 40px center; }
+}
+
+/* staggered entrance for hero content and auth cards */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.8s ease-out both;
+}
+
+/* subtle focus ring for the whole app */
+*:focus-visible {
+  outline: 2px solid #0FA697;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

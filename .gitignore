@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+.env.local
+.pytest_cache/
+.ruff_cache/
+node_modules/
+.next/
+*.egg-info/
+next-env.d.ts
+backend/data/
