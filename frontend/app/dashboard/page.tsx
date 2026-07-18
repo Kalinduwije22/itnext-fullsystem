@@ -95,9 +95,10 @@ export default function Dashboard() {
           <PackagePicker onOrderCreated={refreshOrders} />
           <CVUpload unlocked={hasPaid} />
           <AssessmentForm />
-          <Chat />
         </div>
       </div>
+
+      <Chat />
     </main>
   );
 }

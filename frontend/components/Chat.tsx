@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { api } from "@/lib/api";
-import { Section } from "./PackagePicker";
 
 interface Msg { role: "user" | "assistant"; content: string }
 
@@ -39,6 +38,7 @@ function Markdown({ text }: { text: string }) {
 }
 
 export default function Chat() {
+  const [open, setOpen] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>([
     { role: "assistant", content: "Hi! Ask me anything about your CV, interviews, or moving abroad." },
   ]);
@@ -66,32 +66,57 @@ export default function Chat() {
   }
 
   return (
-    <Section title="4 · Career assistant" note="Instant help, any time. Your advisor sees the highlights.">
-      <div className="mb-4 max-h-72 space-y-3 overflow-y-auto">
-        {msgs.map((m, i) => (
-          <div key={i} className={m.role === "user" ? "text-right" : ""}>
-            <span
-              className={`inline-block max-w-[85%] rounded-2xl px-4 py-2 text-left text-sm ${
-                m.role === "user" ? "bg-jet text-white" : "bg-paper text-ink"
-              }`}
+    <>
+      {open && (
+        <div className="fixed bottom-24 right-6 z-50 flex h-[28rem] w-[22rem] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-xl">
+          <div className="flex items-center justify-between border-b border-line bg-ink px-4 py-3 text-white">
+            <div>
+              <p className="font-display text-sm font-bold">Career assistant</p>
+              <p className="text-xs text-white/60">Instant help, any time.</p>
+            </div>
+            <button
+              onClick={() => setOpen(false)}
+              aria-label="Close chat"
+              className="rounded-full p-1 text-white/70 transition hover:bg-white/10 hover:text-white"
             >
-              {m.role === "assistant" ? <Markdown text={m.content} /> : m.content}
-            </span>
+              ✕
+            </button>
           </div>
-        ))}
-      </div>
-      <form onSubmit={send} className="flex gap-2">
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your question..."
-          className="flex-1 rounded-lg border border-line bg-paper px-3 py-2.5 outline-none focus:border-jet"
-        />
-        <button disabled={busy}
-          className="rounded-lg bg-jet px-5 font-medium text-white transition hover:bg-jet/90 disabled:opacity-60">
-          Send
-        </button>
-      </form>
-    </Section>
+          <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
+            {msgs.map((m, i) => (
+              <div key={i} className={m.role === "user" ? "text-right" : ""}>
+                <span
+                  className={`inline-block max-w-[85%] rounded-2xl px-4 py-2 text-left text-sm ${
+                    m.role === "user" ? "bg-jet text-white" : "bg-paper text-ink"
+                  }`}
+                >
+                  {m.role === "assistant" ? <Markdown text={m.content} /> : m.content}
+                </span>
+              </div>
+            ))}
+          </div>
+          <form onSubmit={send} className="flex gap-2 border-t border-line p-3">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type your question..."
+              className="flex-1 rounded-lg border border-line bg-paper px-3 py-2.5 text-sm outline-none focus:border-jet"
+            />
+            <button disabled={busy}
+              className="rounded-lg bg-jet px-4 text-sm font-medium text-white transition hover:bg-jet/90 disabled:opacity-60">
+              Send
+            </button>
+          </form>
+        </div>
+      )}
+
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-label={open ? "Close career assistant chat" : "Open career assistant chat"}
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-jet text-white shadow-lg transition hover:bg-jet/90 active:scale-95"
+      >
+        {open ? "✕" : "💬"}
+      </button>
+    </>
   );
 }
